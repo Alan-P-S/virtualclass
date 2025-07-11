@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-color: aquamarine;
+        }
+        .nav{
+            display: flex;
+            color: white;
+            width: 100%;
+            height: auto;
+            background-color: rgb(48, 48, 48);
+        }
+        .first{
+            display: flex;
+            align-items: center;
+            color: rgb(255, 255, 255);
+            height: 70px;
+            width: 10%;
+        }
+        .first h4{
+            margin-left: 20px;
+            float: left;
+        }
+        .navbtn{
+           width: 80%;
+           display: flex;
+           flex-direction: row;
+           justify-content: center;
+           align-items: center;
+           float: right;
+           padding: 10px;
+           gap: 10px;
+        }
+        .navbtn a{
+            text-decoration: none;
+            color: black;
+            border-radius: 10px;
+            padding: 9px;
+            background-color: aliceblue;
+            transition: 0.5s ease-out;
+        }
+        .navbtn a:hover{
+            color: white;
+            background-color: rgb(0, 31, 88);
+        }
+        .third{
+            background-color: rgb(75, 75, 75);
+            height: 70px;
+            width: 10%;
+        }
+
+
+        @media screen and (max-width:560px){
+            .navbtn{
+            width: 80%;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+           float: right;
+           padding: 10px;
+           gap: 10px;
+            }
+
+            .navbtn a{
+            text-decoration: none;
+            color: black;
+            border-radius: 10px;
+            width: 100px;
+            text-align: center;
+            padding: 9px;
+            background-color: aliceblue;
+            transition: 0.5s ease-out;
+        }
+        .navbtn a:hover{
+            color: white;
+            background-color: rgb(0, 31, 88);
+        }
+        .first{
+            display: flex;
+            justify-content: center;
+             align-items: center;
+            margin-inline: auto;
+            color: rgb(255, 255, 255);
+            height: auto;
+            width: 10%;
+        }
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <div class="first">
+        <h4>It's me Alan</h4>
+    </div>
+    <div class="navbtn">
+        <a href="/">Home</a>
+        <a href="/plustwo">PlusTwo</a>
+        <a href="/diploma">Diploma</a>
+        <a href="/cet">CET</a>
+        <a href="/uicomponent">UI Components</a>
+          
+    </div>
+    <div class="third">
+        
+    </div>
+</div>
+   
+</body>
+<script src="https://gist.github.com/Alan-P-S/6c1788e23db3d445998dd5c4683508ee.js"></script>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+</style>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "Inter", sans-serif;
+        }
+        
+      
+        #heading{
+            background-color: rgb(48, 48, 48);
+            align-items: center;
+            justify-content: center;
+            color: white;
+            height: 50px;
+            width: 100%;
+            text-align: center;
+           
+        }
+        
+        .question-container{
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 400px;
+            flex-direction: column;
+            background-color: rgb(48, 48, 48);
+            
+        }
+        .question-container h1{
+            text-align: center;
+            color: white;
+            background-color: blue;
+        }
+        .question-container h4{
+            cursor: pointer;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+            color: white;
+            background-color: blueviolet;
+        }
+        .selected{
+            background-color: green;
+        }
+        #body{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+        #submit{
+            display: flex;
+            margin-inline: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 50px;
+            color: white;
+            background-color: rgb(48, 48, 48);
+            border: none;
+        }
+      
+        @media screen and (max-width:600px){
+            .question-container{
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    
+        <h1 id="heading"><%=exam.subject%></h1>
+        <div id="body">
+    <% Object.entries(exam.questions).forEach(([questionKey, q],index)=>{ %>
+        <div class="question-container" data-question="<%=questionKey%>">
+            <h3>Q<%=index+1%>: <%=q.question%></h3>
+            <% for(let i=1;i<=5;i++){ let optKey= `option${i}`;%>
+            <h4 class="option" id="<%=optKey%>" data-question="<%=questionKey%>"><%=q[optKey]%></h4>
+            <% } %>
+        </div>
+    <%})%>
+    
+    </div>
+    <button onClick="handleSubmit()" id="submit">Submit</button>
+    
+    
+</body>
+<script>
+    let response = {};
+    document.addEventListener('DOMContentLoaded',()=>{
+         document.querySelectorAll('.option').forEach((button)=>{
+         button.addEventListener('click',function (){
+            const questionId = this.dataset.question;
+
+            //change color of selected option
+            const container = this.closest('.question-container');
+            container.querySelectorAll('.option').forEach((btn)=>{
+                btn.style.backgroundColor = 'blueviolet';
+            })
+            this.style.backgroundColor = 'green';
+            const selectedOption = this.id;
+            
+            response[questionId] = selectedOption;
+
+            
+        })
+        })
+    })
+   
+    //Checking Answers
+    function checkAnswers(Exam,UserResponse){
+  let attempted=0;
+  let corrected=0;
+ console.log(Exam);
+ console.log(UserResponse);
+  for(const [questionKey,selectedOption] of Object.entries(UserResponse.answers)){
+    const correctOption = Exam.questions[questionKey]?.correctOption;
+    attempted++;
+    if(correctOption === selectedOption){
+        corrected++;
+    }
+  }
+  console.log(corrected);
+  return(corrected);
+}
+   
+
+    function handleSubmit(){
+        const answers = {"answers":response};
+        const Exam = <%- JSON.stringify(exam) %>;
+        const ExamId = "<%=exam._id%>";
+        const ExamLength = Object.entries(Exam.questions).length;
+        const ResponseLength = Object.entries(answers.answers).length;
+        console.log("Question length",ExamLength);
+        console.log("Response length",ResponseLength);
+        if(ExamLength!=ResponseLength){
+            alert("Alert Please Select All the Questions");
+        }
+        else{
+            const corrected = checkAnswers(Exam,answers);
+            fetch('/postexam',{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },body:JSON.stringify({score:corrected,examId:ExamId})
+        }).then(response=>response.json()).then(data=>{console.log('Success',data);alert(data.message+"\n"+"Your Score Out of"+ExamLength+" is "+corrected)}).catch(error=>{console.log('Error',error)});
+        
+    
+    }
+            
+        }
+        
+    
+
+    
+
+</script>
+</html>

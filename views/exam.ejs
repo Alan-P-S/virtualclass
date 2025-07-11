@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+</style>
+    <style>
+       *{
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", sans-serif;
+       }
+      
+        .heading{
+            background-color: rgb(48, 48, 48);
+            color: white;
+            height: 50px;
+            text-align: center;
+        }
+        .exams{
+            display: flex;  
+            flex-direction: column;
+            margin: 10px;
+            gap: 10;
+            align-items: center;
+        }
+        .box{
+            display: flex;
+            margin: 10px;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            width: 400px;
+            background-color: rgb(48, 48, 48);
+        }
+        .btn{
+            cursor: pointer;
+            font-size: 20px;
+            border: none;
+            background: white;
+            width: 100px;
+            height: 50px;
+        }
+        @media screen and (max-width: 600px){
+            .box{
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+    <h1 class="heading">Available Exams🎯</h1>
+     <% exams.forEach(exam=>{ %>
+        <div class="exams">
+        <div class="box">
+        <h2 id="<%= exam.id %>">📝<%= exam.subject %></h2>
+        <button class="btn" id="<%= exam.id %>">Attempt</button>
+        </div>
+        </div>
+        <% }) %>
+        </div>
+    </body>
+<script>
+    console.log("working")
+    document.addEventListener('DOMContentLoaded',function (){
+        document.querySelectorAll(".btn").forEach(function (button){
+            button.addEventListener("click",function (){
+                const examId = this.id;
+                const url = `/attempt?examId=${encodeURIComponent(examId)}`;
+                window.location.href =url;
+                // fetch(url).then(response=>response.json().then(data =>console.log(data)));
+            })
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #container{
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+        }
+        #textfield{
+            display: flex;
+            flex-direction: column;
+            width: 210px;
+          
+           
+        }
+        #textfield label{
+            padding: 2px;
+            position: relative;
+            top: 10px;
+            left: 10px;
+           
+            font-size: 15px;
+            width: 84px;
+        }
+        #subject{
+            width: 200px;
+            height: 40px;
+            border: 1px solid #b76aff;
+            color: #8400ff;
+            font-size: 15px;
+           
+            caret-color: #8400ff;
+            caret: unset;
+            border-radius: 5px;
+        }
+        #inputLabel{
+            color:  white;
+             background-color:  rgb(48, 48, 48);
+        }
+        #subject:focus{
+            outline-color: #8400ff;
+        }
+        #news{
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+            color: white;
+            background-color: rgb(48, 48, 48);
+        }
+        #news input{
+            margin: 12px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #news label{
+
+            font-weight: 700;
+        }
+        #news textarea{
+            font-size: 20px;
+        }
+        #myForm{
+            background-color: rgb(48, 48, 48);
+            width: 100%;
+            color: white;
+            height: 100vh;
+        }
+        #myForm input{
+            margin: 2px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #myForm textarea{
+            font-size: 20px;
+        }
+        #myForm select{
+            font-size: 20px;
+            width: 200px;
+            height: 50px;
+        }
+        #myForm label{
+            font-weight: 700;
+        }
+        #myForm button{
+            margin: 2px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+    <div>
+    <h1>Welcome to admin</h1>
+    <h3>Update News</h3>
+    <div id="news">
+    <form action="/update" method="POST" onSubmit="return confirmSubmit()">
+        <label>Title</label><br>
+        <input type="text" name="title" id="title"><br> 
+        <label>Content</label><br>
+        <textarea name="content" rows="4" cols="30"></textarea><br>
+        <label>Link</label><br>
+        <input type="link" name="link" id="link"><br>
+        <input type="submit" name="submit">
+    </form>
+    </div>
+    </div>
+    <div>
+    <h1>Create Exam</h1>
+    <div id="myForm">
+        
+        <h4 id="totalQuestions">Total: </h4>
+        <div id="textfield">
+        <label for="exam" id="inputLabel">Exam-Name: </label>
+        <input type="text" id="subject" name="subject">
+        </div>
+        
+        
+        <label>Question: </label><br>
+        <textarea name="question" id="question" rows="4" cols="30"></textarea><br>
+        <label>Option1</label>
+        <input type="text" id="option1" name="option1"><br>
+        <label>Option2</label>
+        <input type="text" id="option2" name="option2"><br>
+        <label>Option3</label>
+        <input type="text" id="option3" name="option3"><br>
+        <label>Option4</label>
+        <input type="text" id="option4" name="option4"><br>
+        <label for="">Correct Option</label><br>
+        <select name="correctOption" id="correctOption">
+            <option value="option1">Option1</option>
+            <option value="option2">Option2</option>
+            <option value="option3">Option3</option>
+            <option value="option4">Option4</option>
+        </select><br>
+        <button onClick="addQuestion()">Add Question</button><br>
+        <button onClick="submit()">Submit</button>
+    </div>
+    </div>
+    <div id="preview">
+    </div>
+    </div>
+</body>
+<script>
+    
+    var number=1;
+    var totalQuestions = document.getElementById('totalQuestions');
+    function confirmSubmit(){
+        return confirm("Do your want to Update the News");
+    }
+    const questionBank = {questions: {},subject:""};
+    
+    function addQuestion(){
+        const count = Object.entries(questionBank.questions).length;
+        if(count<5){
+        var questionText =document.getElementById('question').value;
+        var option1 =document.getElementById('option1').value;
+        var option2 =document.getElementById('option2').value;
+        var option3 =document.getElementById('option3').value;
+        var option4 =document.getElementById('option4').value;
+        var subject =document.getElementById('subject').value;
+        var correctOption =document.getElementById('correctOption').value;
+        const key = `question${number}`;
+        questionBank.subject = subject;
+        questionBank.questions[key] ={
+            question:questionText,
+            option1:option1,
+            option2:option2,
+            option3:option3,
+            option4:option4,
+            correctOption:correctOption,
+        }
+        number++;
+        totalQuestions.innerHTML = `Total: ${number-1}`;
+        console.log(questionBank);
+        console.log(count);
+        addPreview();
+    }
+    else{
+        alert("Limit Exceed");
+    }
+    }
+
+    function addPreview(){
+        
+        const previewQuestions = Object.entries(questionBank.questions);
+        const container = document.getElementById('preview');
+        container.innerHTML= '';
+        previewQuestions.forEach(([questionKey,q])=>{
+            const question = document.createElement('h3');
+            question.textContent = q.question
+            container.appendChild(question);
+        })
+    }
+
+    function submit(){
+        const count = Object.entries(questionBank.questions);
+        if(count.length<5){
+            alert("There should be 5 questions");
+        }
+        else if(count.length>5){
+            alert("Only 5 questions allowed");
+        }
+        else{
+            fetch('/addexam',{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },body:JSON.stringify(questionBank)
+        }).then(response=>response.json()).then(data=>{console.log('Success',data);alert(data.message)}).catch(error=>{console.log('Error',error)});
+        }
+        
+    }
+    
+</script>
+</html>
