@@ -9,22 +9,22 @@ export const loginGet = async (req,res)=>{
         if(token){
             const decode = jwt.verify(token,process.env.JWT_SECRET);
             if(!decode){
-            return res.render('login');
+            return res.render('auth/login');
             }
             const user = await User.findById(decode.userId).select('-password');
             if(user.role=="admin"){
                 return res.redirect('/dashboard');
             }
-            return res.render('profile',{user});
+            return res.render('auth/profile',{user});
         }
         else{
-            return res.render('login');
+            return res.render('auth/login');
         } 
         
 }
 
 export const signupGet = (req,res)=>{
-    res.render('signup');
+    res.render('auth/signup');
 }
 
 export const login = async (req,res)=>{

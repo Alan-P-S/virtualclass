@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+</style>
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+        #container{
+            display: flex;
+            flex-direction: column;
+            /* background-color: rgb(255, 163, 42); */
+            height: 100vh;
+            width: 100%;
+        }
+        #Appheader{
+            display: flex;
+            width: 100%;
+            height: 10vh;
+            background-color: rgb(125, 0, 228);
+        }
+        #Appbody{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            height: 700px;
+            background-color: rgb(243, 245, 248);
+            overflow-y: auto;
+        }
+        #messageYou{
+            position: relative;
+            left: calc(100% - 150px - 10px);
+            background-color: rgb(125, 0, 228);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            /* height: 80px; */
+            width: 150px;
+            flex-shrink: 0;
+        }
+        #messageThem{
+            position: relative;
+            left: 10px;
+            background-color: rgb(190, 190, 190);
+            border-radius: 10px;
+            /* height: 80px; */
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+            color: rgb(46, 46, 46);
+            flex-shrink: 0;
+
+        }
+        .name{
+            font-size: 12px;
+            align-items: center;
+            /* height: 20px; */
+            width: 100%;
+        }
+        .name p{
+            position: relative;
+            padding: 3px;
+            right: 10px;
+            float: right;
+        }
+        .message{
+            display: flex;
+            justify-content: center;
+            margin-inline: auto;
+            align-items: center;
+            padding-bottom: 15px;
+            border-radius: 10px;    
+        }
+        .message p{
+            padding: 10px;
+            
+        }
+        #messageInput{
+            display: flex;
+            width: 100%;
+            height: 10vh;
+            /* background-color: rgb(23, 54, 141); */
+        }
+        
+        #addbtn{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            position: relative;
+            left: 10px;
+            top: calc(50% - 20px);
+            height: 40px;
+            color:  rgb(125, 0, 228);
+            border-radius: 10px;
+            font-size: 30px;
+            width: 20%;
+        }
+        #InputField{
+            height: 100%;
+            
+            width: 100%;
+        }
+        #InputField textarea{
+            display: flex;
+            padding-left: 15px;
+            padding-right: 15px;
+            font-weight: 500;
+            border-radius: 20px;
+            background-color: rgb(218, 218, 218);
+            position: relative;
+            top: 5px;
+            overflow: auto;
+            left: 5px;
+            font-size: 15px;
+            width: calc(100% - 5px - 30px - 15px);
+            height: 80%;
+        }
+
+        #sendbtn{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            position: relative;
+            right: 10px;
+            top: calc(50% - 20px);
+            height: 40px;
+            border-radius: 20px;
+            background-color: rgb(125, 0, 228);
+            color:  rgb(255, 255, 255);
+            width: 20%;
+        }
+        #AppNav{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 5vh;
+            background-color: rgb(174, 0, 255);
+        }
+        #backbtn{
+            width: 30%;
+            height: 100%;
+            background-color: rgb(0, 112, 112);
+        }
+        #homebtn{
+            width: 40%;
+            height: 100%;
+            background-color: rgb(0, 112, 47);
+        }
+        #frontbtn{
+            width: 30%;
+            height: 100%;
+            background-color: rgb(112, 0, 97);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="Appheader"><p style="color: white; margin-top: 20px;margin-left: 10px;">Welcome to chat</p></div>
+        <div id="Appbody">
+            <br>
+             <% messages.forEach(message=>{%>
+            <% if(message.senderId.toString()==userId.toString()){ %>
+                <div id="messageYou"><div class="name"><p><%=message.senderName%></p></div><div class="message"><p><%=message.text%></p></div></div>
+            <%} else{ %>
+                <div id="messageThem"><div class="name"><p><%=message.senderName%></p></div><div class="message"><p><%=message.text%></p></div></div>
+             <%}%>
+            
+            <%})%>
+            
+        </div>
+        <div id="messageInput">
+            <div id="addbtn"><p>+</p></div>
+            <div id="InputField" contenteditable="true">
+                <textarea id="InputBox"></textarea>
+            </div>
+            <div id="sendbtn"><p>Send</p></div>
+           
+        </div>
+        <div id="AppNav">
+            <div id="backbtn"></div>
+            <div id="homebtn"></div>
+            <div id="frontbtn"></div>
+        </div>
+    </div>
+    <div>
+    </div>
+</body>
+<script>
+    const inputField = document.getElementById('InputBox');
+    const scrollBox = document.getElementById('Appbody');
+    scrollTop();
+    let message = "";
+    inputField.addEventListener('change',(e)=>{
+        message = e.target.value;
+        console.log("Message: "+message);
+    })
+
+    const button = document.getElementById('sendbtn');
+    button.addEventListener('click',async (e)=>{
+        await sendMessage();
+        location.reload(true);
+    })
+
+    function sendMessage(){
+        fetch('/sendmessage',{method:"POST",headers:{
+            "Content-type":"application/json"
+        },body:JSON.stringify({message:message})}).then(res=> res.json()).then(data=>console.log('Response',data)).catch(err=>console.error('Error',err));
+    }
+
+    function scrollTop(){
+        scrollBox.scrollTop = scrollBox.scrollHeight;
+    }
+</script>
+</html>

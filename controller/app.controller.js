@@ -1,6 +1,8 @@
 import News from "../models/news.model.js";
 import Exam from "../models/exam.model.js"
 import Mark from "../models/mark.model.js"
+import Message from "../models/message.model.js";
+
 export const addNews = async (req,res)=>{
     const {title,content,link} = req.body;
     try{
@@ -64,7 +66,7 @@ export const attemptExam = async (req,res)=>{
     }
 
     const exam = await Exam.findById(examId);
-    return res.render('attempting',{exam});
+    return res.render('app/attempting',{exam});
 }
 
 export const postExam = async (req,res)=>{
@@ -74,7 +76,7 @@ export const postExam = async (req,res)=>{
     console.log(user._id);
     console.log(score);
     if(!examId || !user || !score){
-        return res.status(500).json({message:"Invalid Values Provie all values"});
+        return res.status(500).json({message:"Invalid Values Provie all values Required"});
     }
     const newMark = new Mark({
         ExamId:examId,
@@ -93,16 +95,51 @@ export const postExam = async (req,res)=>{
     
 }
 
+
+export const classRoom = async (req,res)=>{
+    const messages = await Message.find();
+    const user = req.user;
+    return res.render('app/class',{messages,userId:user._id});
+}
+
 export const getExams = async (req,res)=>{
     const username = req.user.name;
     const exams = await Exam.find({},'subject');
 
-    return res.render('exam',{exams});
+    return res.render('app/exam',{exams});
 }
 
 
 
 export const getNews = async (req,res)=>{
     const news = await News.find({},'title content link');
-    return res.render('news',{news});
+    return res.render('app/news',{news});
+}
+
+export const sendMessage = async (req,res)=>{
+    const {message} = req.body;
+    const user = req.user;
+    try{
+        if(!message || !user){
+        return res.status(500).json({message:"Invalid all fields are required"});
+    }
+
+    const newMessage = new Message({
+        senderId:user._id,
+        senderName:user.name,
+        text:message,
+    })
+
+    if(!newMessage){
+        return res.status(500).json({message:"Invalid datatypes"});
+    }
+    else{
+        await newMessage.save();
+        return res.status(200).json({message:newMessage,userId:user._id});
+    }
+    }catch(error){
+        console.log("Error in sendingMessage");
+        return res.status(500).json({message:"Ineternal Server Error"});
+    }
+    
 }
