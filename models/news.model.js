@@ -13,8 +13,8 @@ const newsSchema = new mongoose.Schema({
     link:{
         type:String,
         require:true,
-    }
-})
+    },
+},{timestamps:true})
 
 const News = mongoose.model("News",newsSchema);
 

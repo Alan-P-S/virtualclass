@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNews, getNews, addExam, getExams, attemptExam, postExam,classRoom,sendMessage} from '../controller/app.controller.js';
+import { addNews, getNews, addExam, getExams, attemptExam, postExam,classRoom,sendMessage,addReaction} from '../controller/app.controller.js';
 import { protectRoute, isadminRoute } from '../middleware/auth.middleware.js';
 
 
@@ -18,6 +18,8 @@ router.post('/postexam', protectRoute, postExam);
 router.get('/news', getNews);
 
 router.get('/class',protectRoute,classRoom);
+
+router.post('/reaction',protectRoute,addReaction);
 
 router.post('/update', isadminRoute, addNews);
 

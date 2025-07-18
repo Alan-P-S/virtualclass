@@ -54,6 +54,10 @@
             text-align: center;
         }
         .update{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             color: white;
             width: 70%;
             padding: 10px;
@@ -65,21 +69,257 @@
             color: rgb(255, 255, 255);
             text-decoration: none;
         }
+
+        #buttons{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 40%;
+            height: 30px;
+            float: right;
+            
+
+        }
+        .add{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 255, 255);
+            border-radius: 20px;
+            color: black;
+            height: 100%;
+            width: 50%;
+        }
+        .show{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 255, 255);
+            color: black;
+            border-radius: 20px;
+            font-size: 12px;
+            height: 100%;
+            width: 50%;
+        }
+        .emojies{
+            display: none;
+            position: relative;
+            background-color: yellow;
+            width: 280px;
+            height: 120px;
+        }
+
+        .emoji{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(228, 228, 228);
+            width: 40px;
+            height: 40px;
+        }
+        .row{
+            display: flex;
+            flex-direction: row;
+        }
+        .emojiPic{
+            width: 30px;
+        }
+        .emojiPic:hover{
+            width: 35px;
+        }
+        #reactionsBox{
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin: 5px;
+            border-width: 4px;
+            border-style: solid;
+            border-image:  linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%) 1; 
+            width: 100%;
+            height: auto;
+        }
+        #reactionBox{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 40px;
+        }
+        #reactor{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: white;
+            background-color: rgb(31, 31, 31);
+            width: 70%;
+            height: 100%;
+        }
+        #reaction{
+             display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(31, 31, 31);
+            width: 30%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
     <div class="nav">
         <a href="/"><button class="btn">Back</button></a>
     </div>
+    <%let count = 1; %>
     <div class="container">
         <% news.forEach(n=>{ %>
         <div class="update">
         <h1><%= n.title %></h1>
-        <p><%= n.content %></p>
+        <p><%= n.content %></p><br>
+        
         <a href="<%= n.link %>" target="_blank"  rel="noopener noreferrer"><%= n.link %></a>
+
+        <div id="reactionsBox">
+         <% reactions.forEach(reaction=>{ %>
+            <%if(reaction.newsId.toString() == n.id.toString()){ %>
+                
+                <div id="reactionBox">
+                <div id="reactor"><p><%= reaction.userName %></p></div>
+                <div id="reaction"><img src="/images/emojies/<%=reaction.reaction%>.png" class="emojiPic" id="<%=reaction.reaction%>" alt=""></div>
+                 </div>
+                 
+            <%}%>
+             <% }) %>
+         </div>
+        <div id="buttons">
+            <div class="add" id="<%=count%>">
+                <p>+</p>
+            </div>
         </div>
+        </div>
+        <div class="emojies" id="emojieBox<%=count%>" data-news="<%=n.id%>">
+            <div class="row">
+                <div class="emoji" >
+                    <img src="/images/emojies/smile.png" class="emojiPic" id="smile" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/smilelove.png" class="emojiPic" id="smilelove" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/wink.png" class="emojiPic" id="wink" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/sick.png" class="emojiPic" id="sick" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/shocked.png" class="emojiPic" id="shocked" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/sad-face.png" class="emojiPic" id="sad-face" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/sad.png" class="emojiPic" id="sad" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="emoji">
+                    <img src="/images/emojies/laugh.png" class="emojiPic" id="laugh" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/happy.png" class="emojiPic" id="happy" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/happy-face.png" class="emojiPic" id="happy-face" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/confused.png" class="emojiPic" id="confused" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/money.png" class="emojiPic" id="money" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/face.png" class="emojiPic" id="face" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/hearteye.png" class="emojiPic" id="hearteye" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="emoji">
+                    <img src="/images/emojies/cold.png" class="emojiPic" id="cold" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/cool.png" class="emojiPic" id="cool" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/fire.png" class="emojiPic" id="fire" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/confetty.png" class="emojiPic" id="confetty" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/pray.png" class="emojiPic" id="pray" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/robot.png" class="emojiPic" id="robot" alt="">
+                </div>
+                <div class="emoji">
+                    <img src="/images/emojies/poop.png" class="emojiPic" id="poop" alt="">
+                </div>
+            </div>
+                
+        </div>
+       
+        
+        <% count++ %>
         <% }) %>
     </div>
     
 </body>
+<script defer>
+    const addBtn = document.querySelectorAll('.add');
+    const emojiContainer = document.querySelectorAll('.emojies');
+    const emojies = document.querySelectorAll('.emojiPic');
+    emojies.forEach(emoji=>{
+        emoji.addEventListener('click',function(event){
+            const newsId = event.currentTarget.closest('.emojies').getAttribute('data-news');
+            const reaction = this.id;
+            postReaction(reaction,newsId);
+        })
+    })
+    addBtn.forEach(btn =>{
+        btn.addEventListener('click',showEmojis);
+    });
+
+    function showEmojis(){
+            const btnId = parseInt(this.id);
+            console.log(btnId);
+            emojiContainer.forEach(box=>{
+                const id = box.id;
+                if(id == `emojieBox${btnId}`){
+                    if(box.style.display=='block'){
+                        box.style.display ='none'
+                    }
+                    else{
+                        box.style.display ='block'
+                    }
+                    
+                }
+               else{
+                box.style.display ='none'
+               }
+                
+            })
+    }
+    function postReaction(reaction,newsId){
+        console.log(reaction);
+        console.log(newsId);
+                    fetch('/reaction',{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },body:JSON.stringify({newsId:newsId,reaction:reaction})}).then(response=>response.json()).then(data=>{console.log('Sucess: ',data);location.reload(true)}).catch(error=>{console.log("Error",error)})
+            }
+</script>
 </html>
