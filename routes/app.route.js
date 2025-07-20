@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNews, getNews, addExam, getExams, attemptExam, postExam,classRoom,sendMessage,addReaction} from '../controller/app.controller.js';
+import { addNews, getNews, addExam, getExams, attemptExam, postExam,classRoom,sendMessage,addReaction,postAttendence,getAttendence} from '../controller/app.controller.js';
 import { protectRoute, isadminRoute } from '../middleware/auth.middleware.js';
 
 
@@ -14,6 +14,10 @@ router.get('/exam', protectRoute, getExams);
 router.get('/attempt', protectRoute, attemptExam);
 
 router.post('/postexam', protectRoute, postExam);
+
+router.post('/attendence',protectRoute,postAttendence);
+
+router.get('/attendence',protectRoute,getAttendence);
 
 router.get('/news', getNews);
 

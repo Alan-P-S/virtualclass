@@ -3,6 +3,9 @@ import Exam from "../models/exam.model.js"
 import Mark from "../models/mark.model.js"
 import Message from "../models/message.model.js";
 import Reaction from '../models/reaction.model.js';
+import { isInBetween } from "../lib/currentTime.js";
+import { Attendence } from "../models/attendence.model.js";
+import  cloudinary  from "../lib/cloudinary.js";
 
 export const addNews = async (req,res)=>{
     const {title,content,link} = req.body;
@@ -146,6 +149,87 @@ export const sendMessage = async (req,res)=>{
     
 }
 
+
+export const postAttendence = async (req,res)=>{
+    const mrngAttendTime = {startTime:'05:00:00',endTime:'05:30:00'};
+    const evenAttendTime = {startTime:'21:00:00',endTime:'21:30:00'};
+    const currentTime = new Date();
+    const { image } = req.body;
+    const user = req.user;
+    
+    
+
+    try{
+
+    if(isInBetween(mrngAttendTime.startTime,mrngAttendTime.endTime,currentTime) || isInBetween(evenAttendTime.startTime,evenAttendTime.endTime,currentTime)){
+        if(!image){
+             return res.status(500).json({message:'Image file is required'});
+        }
+        
+        const ismrng = isInBetween(mrngAttendTime.startTime,mrngAttendTime.endTime,currentTime);
+        if(ismrng){
+            const isattend = await Attendence.findOne({userId:user._id,morning:true,date:currentTime.toDateString()});
+            if(isattend){
+                return res.status(200).json({message:'Already put morning Attendence'});
+            }
+            else{
+                const uploadResponse = await cloudinary.uploader.upload(image);
+                const attendence = new Attendence({
+                username:user.name,
+                userId:user._id,
+                date:currentTime.toDateString(),
+                morning:true,
+                morningImage:uploadResponse.secure_url,
+                })
+
+                 await attendence.save();
+
+                 return res.status(500).json({message:'Morning Attendence marked'});
+            }
+            
+        }
+        else{
+            const isattend = await Attendence.findOne({userId:user._id,evening:true,date:currentTime.toDateString()});
+            if(isattend){
+                return res.status(200).json({message:'Already put Evening attendence'});
+            }
+            const ismrngAttend = await Attendence.findOne({userId:user._id,morning:true,date:currentTime.toDateString()});
+            
+            if(ismrngAttend){
+                const uploadResponse = await cloudinary.uploader.upload(image);
+                await Attendence.updateOne({userId:user._id,date:currentTime.toDateString()},{$set:{evening:true,eveningImage:uploadResponse.secure_url}});
+                return res.status(200).json({message:'Evening Attendence also marked'});
+            }else{
+                const uploadResponse = await cloudinary.uploader.upload(image);
+                const attendence = new Attendence({
+                username:user.name,
+                userId:user._id,
+                date:currentTime.toDateString(),
+                evening:true,
+                eveningImage:uploadResponse.secure_url,
+             })
+
+            await attendence.save();
+
+            return res.status(200).json({message:'Evening Attendence only marked'});
+            }
+            
+        }
+
+    }
+    else{
+        return res.status(500).json({message:'Cannot Mark Attendence in AnyTime'});
+    }
+    }
+    catch(error){
+        console.log("Error in Attendence",error);
+        return res.status(500).json({message:'Internal server error'});
+    }
+} 
+
+export const getAttendence = async (req,res)=>{
+    res.render('app/attendence');
+}
 
 export const addReaction = async (req,res)=>{
     try{
