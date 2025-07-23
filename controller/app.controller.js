@@ -38,6 +38,48 @@ export const addNews = async (req,res)=>{
     }
 }
 
+export const getProfile = async (req,res)=>{
+    const user = req.user;
+    const attendence = await Attendence.find({userId:user._id}).sort({_id:1});
+    const months = [
+     "January", "February", "March", "April", "May", "June",
+     "July", "August", "September", "October", "November", "December"
+    ];
+    const days = {}
+
+    for(const data of attendence){
+        let count = 1;
+        let date = new Date(data.createdAt);    
+        const monthName= months[date.getMonth()];
+        const dayName = date.getDate();
+        
+        if(data.session =='morning'){
+            if(data.status=='approved'){
+                if (!days[monthName]) days[monthName] = {};
+                days[monthName][dayName] = {morning:'approved'}
+            }
+            else{
+                if (!days[monthName]) days[monthName] = {};
+                days[monthName][dayName] = {morning:'approved'}
+            } 
+        }
+        else{
+             if(data.status=='approved'){
+                if (!days[monthName]) days[monthName] = {};
+                days[monthName][dayName] = {evening:'approved'}
+            }
+            else{
+                if (!days[monthName]) days[monthName] = {};
+                days[monthName][dayName] = {evening:'approved'}
+            
+            }
+        }
+    }
+        
+    console.log(days);
+    res.render('auth/profile',{user:user,data:days});
+};
+
 export const addExam = async (req,res)=>{
     const {questions,subject} = req.body;
 
@@ -152,12 +194,14 @@ export const sendMessage = async (req,res)=>{
 
 export const postAttendence = async (req,res)=>{
     const mrngAttendTime = {startTime:'05:00:00',endTime:'05:30:00'};
-    const evenAttendTime = {startTime:'21:00:00',endTime:'21:30:00'};
+    const evenAttendTime = {startTime:'22:00:00',endTime:'21:30:00'};
+    const startDate = new Date();
+    startDate.setHours(0,0,0,0);
+    const endDate = new Date();
+    endDate.setHours(23,59,59,999);
     const currentTime = new Date();
     const { image } = req.body;
     const user = req.user;
-    
-    
 
     try{
 
@@ -165,21 +209,20 @@ export const postAttendence = async (req,res)=>{
         if(!image){
              return res.status(500).json({message:'Image file is required'});
         }
-        
         const ismrng = isInBetween(mrngAttendTime.startTime,mrngAttendTime.endTime,currentTime);
         if(ismrng){
-            const isattend = await Attendence.findOne({userId:user._id,morning:true,date:currentTime.toDateString()});
+            const isattend = await Attendence.findOne({userId:user._id,session:"morning",createdAt:{$gte: startDate,$lte: endDate}});
+
             if(isattend){
                 return res.status(200).json({message:'Already put morning Attendence'});
             }
             else{
                 const uploadResponse = await cloudinary.uploader.upload(image);
                 const attendence = new Attendence({
-                username:user.name,
                 userId:user._id,
-                date:currentTime.toDateString(),
-                morning:true,
-                morningImage:uploadResponse.secure_url,
+                username:user.name,
+                session:'morning',
+                image:uploadResponse.secure_url,
                 })
 
                  await attendence.save();
@@ -189,29 +232,22 @@ export const postAttendence = async (req,res)=>{
             
         }
         else{
-            const isattend = await Attendence.findOne({userId:user._id,evening:true,date:currentTime.toDateString()});
+            const isattend = await Attendence.findOne({userId:user._id,session:"evening",createdAt:{$gte: new Date(new Date().setHours(0,0,0,0)),$lte: new Date(new Date().setHours(23,59,59,999))}});
             if(isattend){
                 return res.status(200).json({message:'Already put Evening attendence'});
             }
-            const ismrngAttend = await Attendence.findOne({userId:user._id,morning:true,date:currentTime.toDateString()});
-            
-            if(ismrngAttend){
-                const uploadResponse = await cloudinary.uploader.upload(image);
-                await Attendence.updateOne({userId:user._id,date:currentTime.toDateString()},{$set:{evening:true,eveningImage:uploadResponse.secure_url}});
-                return res.status(200).json({message:'Evening Attendence also marked'});
-            }else{
+            else{
                 const uploadResponse = await cloudinary.uploader.upload(image);
                 const attendence = new Attendence({
-                username:user.name,
                 userId:user._id,
-                date:currentTime.toDateString(),
-                evening:true,
-                eveningImage:uploadResponse.secure_url,
+                username:user.name,
+                session:'evening',
+                image:uploadResponse.secure_url,
              })
 
             await attendence.save();
 
-            return res.status(200).json({message:'Evening Attendence only marked'});
+            return res.status(200).json({message:'Evening Attendence marked'});
             }
             
         }
@@ -225,7 +261,34 @@ export const postAttendence = async (req,res)=>{
         console.log("Error in Attendence",error);
         return res.status(500).json({message:'Internal server error'});
     }
-} 
+}
+
+export const approveAttendence = async (req,res)=>{
+    const {attendenceId} = req.body;
+    if(!attendenceId){
+        return res.status(500).json({message:"Field value missing"});
+    }
+    const attendence = await Attendence.findByIdAndUpdate(attendenceId,{status:'approved'}); 
+    return res.status(200).json({message:'Attendence approved'});
+}
+
+export const denyAttendence = async (req,res)=>{
+    const {attendenceId} = req.body;
+    if(!attendenceId){
+        return res.status(500).json({message:"Field value missing"});
+    }
+    const attendence = await Attendence.findByIdAndUpdate(attendenceId,{status:'denied'}); 
+    return res.status(200).json({message:'Attendence Denied'});
+
+
+}
+
+export const attendenceDashboard = async (req,res)=>{
+    const attendence = await Attendence.find({status:'processing'});
+    if(attendence){
+        res.render('app/attendencedashboard',{datas:attendence});
+    }
+}
 
 export const getAttendence = async (req,res)=>{
     res.render('app/attendence');

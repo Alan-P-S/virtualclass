@@ -4,23 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+</style>
     <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+        }
         #container{
             height: 100vh;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
             justify-content: center;
+            background-color: rgb(36, 36, 36);
             align-items: center;
+        }
+        #profile{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: antiquewhite;
+            height: 100px;
+            width: 250px;
+        }
+        #box{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 10px;
+            height: 100px;
+            width: 268px;
+            border-radius: 5px;
+            background-color: rgb(230, 230, 230);
+        }
+
+        .row{
+            display: flex;
+            height: 25px;
+            gap: 2px;
+            width: 100%;
+     
+            flex-direction: row;
+
+        }
+
+        .day{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: white;
+            background-color: rgb(99, 182, 105);
+            border-radius: 4px;
+            width: 25px;
+            height: 25px;
+        }
+        #boxContainer{
+            display: flex;
+            flex-direction: column;
+        }
+        #month{
+            margin-left: 10px;
+            color: white;
         }
     </style>
 </head>
-<body style="height: 100vh; background-color: rgb(255, 255, 255);">
+<body>
     <div id="container">
-        <div id="profile" style="display: flex;flex-direction: column;background-color: rgb(48, 48, 48);color: white;justify-content: center; align-items: center; width: 400px; height: 300px;">
-        <h1>Welcome</h1>
-        <h1><%=user.name%></h1>
-        <p style="color: white;"><a href="/" style="text-decoration: none; color: rgb(0, 0, 0); background-color: white; padding: 20px;">Explore</a></p>
+        <div id="profile">
+        <h3>Welcome <%=user.name%></h3>
+        <p style="color: white;"><a href="/">Explore</a></p>
+    </div>
+    <div id="boxContainer">
+        <div id="month"><p>July</p></div>
+    <div id="box">
+        <div id="row0" class="row">
+            <div id="day1" class="day" ><p>1</p></div>
+            <div id="day2" class="day"><p>2</p></div>
+            <div id="day3" class="day"><p>3</p></div>
+            <div id="day4" class="day"></div>
+            <div id="day5" class="day"></div>
+            <div id="day6" class="day"></div>
+            <div id="day7" class="day"></div>
+            <div id="day8" class="day"></div>
+            <div id="day9" class="day"></div>
+            <div id="day10" class="day"></div>
+        </div>
+        <div id="row1" class="row">
+            <div id="day11" class="day"></div>
+            <div id="day12" class="day"></div>
+            <div id="day13" class="day"></div>
+            <div id="day14" class="day"></div>
+            <div id="day15" class="day"></div>
+            <div id="day16" class="day"></div>
+            <div id="day17" class="day"></div>
+            <div id="day18" class="day"></div>
+            <div id="day19" class="day"></div>
+            <div id="day20" class="day"></div>
+        </div>
+        <div id="row2" class="row">
+            <div id="day21" class="day"></div>
+            <div id="day22" class="day"></div>
+            <div id="day23" class="day"></div>
+            <div id="day24" class="day"></div>
+            <div id="day25" class="day"></div>
+            <div id="day26" class="day"></div>
+            <div id="day27" class="day"></div>
+            <div id="day28" class="day"></div>
+            <div id="day29" class="day"></div>
+            <div id="day30" class="day"></div>
+        </div>
+        <div id="row3" class="row">
+            <div id="day31" class="day"></div>
+        </div>
+        </div>
         </div>
     </div>
-    
 </body>
+<script>
+    const days = <%- JSON.stringify(data)%>
+</script>
 </html>
