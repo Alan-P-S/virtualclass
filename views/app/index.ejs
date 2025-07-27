@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 </style>
@@ -46,7 +47,6 @@
            justify-content: center;
            align-items: center;
            float: right;
-
            padding: 10px;
            gap: 10px;
         }
@@ -89,17 +89,37 @@
             text-align: center;
             overflow-y: auto;
         }
-
-        @media screen and (max-width:560px){
-            .navbtn{
-            width: 80%;
-           display: flex;
+        #toggle{
+            display: none;
+        }
+        @media screen and (max-width:850px){
+          .nav{
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            width: 100%;
+            height: auto;
+            background-color: rgb(48, 48, 48);
+            flex-shrink: 0;
+        }
+        .navbtn{
+           width: 80%;
+           display: grid;
+           grid-template-columns: auto auto auto;
            flex-direction: column;
            justify-content: center;
            align-items: center;
-           float: right;
-           padding: 10px;
            gap: 10px;
+           flex-shrink: 0;
+        }
+            #toggle{
+                display: block;
+                font-size: 35px;
+                color: white;
+                width: 100%;
+                background-color: rgb(48, 48, 48);
             }
 
             .navbtn a{
@@ -131,19 +151,22 @@
 </head>
 <body>
     <div class="container">
-<div class="nav">
+        <div id="toggle">
+            <i class="fa-solid fa-bars" id="togglebtn" onclick="showNav()"></i>
+        </div>
+<div class="nav" id="nav">
     <div class="first">
         <h4>Virtual-Class</h4>
     </div>
     <div class="navbtn">
+        <a href="/auth/login">Login</a>
+        <a href="/auth/signup">Signup</a>
+        <a href="/dashboard">Admin??</a>
         <a href="/exam/get">Take Test</a>
         <a href="/news/getnews">Updates</a> 
         <a href="/message/chat">Chat</a>
-    
         <a href="/attendence/get">Attendence</a>
-        <a href="/dashboard">Admin??</a>
-        <a href="/auth/login">Login</a>
-        <a href="/auth/signup">Signup</a>
+        <a href="/profile">Profile</a>
     </div>
     <div class="third">
         <!-- <div class="login">
@@ -160,9 +183,20 @@
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    const socket =  io();
-    const message = 'hello';
-    socket.emit('sendmessage',message);
+    function showNav(){
+        const nav = document.querySelector('.nav');
+        const mediaQuery = window.matchMedia('(max-width:560px)');
+         if(nav.style.display == 'none'){
+            nav.style.display = 'flex';
+         }
+         else{
+            nav.style.display = 'none';
+         };
+        if(mediaQuery.matches){
+           
+        }
+        
+    }
 </script>
 </body>
 

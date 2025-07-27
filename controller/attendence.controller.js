@@ -12,7 +12,6 @@ export const postAttendence = async (req,res)=>{
     const currentTime = new Date();
     const { image } = req.body;
     const user = req.user;
-    
     try{
     if(isInBetween(mrngAttendTime.startTime,mrngAttendTime.endTime,currentTime) || isInBetween(evenAttendTime.startTime,evenAttendTime.endTime,currentTime)){
         if(!image){
