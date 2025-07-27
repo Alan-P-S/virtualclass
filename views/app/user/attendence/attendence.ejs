@@ -22,6 +22,11 @@
             height: 100vh;
         }
         #rules{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
             color: white;
             text-align: center;
         }
@@ -41,9 +46,14 @@
 <body>
     <div id="container">
         <div id="rules">
-            <h4><center>Attendence Time</center></h4>
+            <h4 class="heading" style="background-color: rgb(3, 54, 121);width: 200px;padding: 5px;"><center>Attendence Time</center></h4>
+            <div style="background-color: rgb(180, 2, 2);width: 250px;border-radius: 12px;padding: 5px;">
+            <p>Something is better than nothing...<br>Each steps counts...</p>
+            </div>
+            <div style="background-color: rgb(79, 170, 255);width: 250px;border-radius: 12px;padding: 5px;">
             <p>Morning: 05:00AM to 05:30AM</p>
             <p>Evening: 09:30PM to 10:00PM</p>
+            </div>
             <p>Reduce Image Sizde if Upload Failed(Max: 10MB)<p>
         </div>
         <div id="inputBox">
@@ -64,7 +74,7 @@
 
         reader.onload = function(e){
              const base64Image = e.target.result;
-             fetch('/attendence',{method:'POST',
+             fetch('/attendence/add',{method:'POST',
              headers:{
                 'Content-Type':'application/json'
             },

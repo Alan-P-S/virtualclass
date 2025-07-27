@@ -163,7 +163,7 @@
     <div id="preview">
     </div>
     <div id="attendenceDashBoard">
-        <button id="attendenceBtn"><a href="/attendencedashboard">Attendence DashBoard</a></button>
+        <button id="attendenceBtn"><a href="/attendence/dashboard">Attendence DashBoard</a></button>
     </div>
     </div>
 </body>
@@ -228,7 +228,7 @@
             alert("Only 5 questions allowed");
         }
         else{
-            fetch('/addexam',{
+            fetch('/exam/create',{
             method:"POST",
             headers:{
                 'Content-Type':'application/json'

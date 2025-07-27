@@ -143,11 +143,11 @@
     })
 
    function sendDisapprove(id){
-        fetch('/denyattendence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attendenceId:id})}).then(response=>response.json()).then(data=>{console.log('Fetch success');alert(data.message);location.reload(true)}).catch(error=>{console.error('Error',error)});
+        fetch('/attendence/deny',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attendenceId:id})}).then(response=>response.json()).then(data=>{console.log('Fetch success');alert(data.message);location.reload(true)}).catch(error=>{console.error('Error',error)});
     }
 
     function sendApprove(id){
-        fetch('/approveattendence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attendenceId:id})}).then(response=>response.json()).then(data=>{console.log('Fetch success');alert(data.message);location.reload(true)}).catch(error=>{console.error('Error',error)});
+        fetch('/attendence/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attendenceId:id})}).then(response=>response.json()).then(data=>{console.log('Fetch success');alert(data.message);location.reload(true)}).catch(error=>{console.error('Error',error)});
     }
 </script>
 </html>

@@ -315,7 +315,7 @@
     function postReaction(reaction,newsId){
         console.log(reaction);
         console.log(newsId);
-                    fetch('/reaction',{
+                    fetch('/news/addreaction',{
                         method:'POST',
                         headers:{
                             'Content-Type':'application/json'

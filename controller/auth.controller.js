@@ -2,7 +2,6 @@ import { generateToken } from "../lib/util.js";
 import User from '../models/users.model.js'
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import e from "express";
 
 export const loginGet = async (req,res)=>{
         const token = req.cookies.token;
@@ -15,7 +14,7 @@ export const loginGet = async (req,res)=>{
             if(user.role=="admin"){
                 return res.redirect('/dashboard');
             }
-            return res.render('auth/profile',{user});
+            return res.redirect('/profile');
         }
         else{
             return res.render('auth/login');

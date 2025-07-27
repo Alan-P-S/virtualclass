@@ -13,7 +13,6 @@ export const protectRoute = async (req,res,next)=>{
         if(!decode){
             return res.status(401).json({message:"Unauthorized - Invaild token"});
         }
-
         const user = await User.findById(decode.userId).select('-password');
 
         if(!user){

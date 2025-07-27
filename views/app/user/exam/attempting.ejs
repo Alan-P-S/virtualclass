@@ -155,7 +155,7 @@
         }
         else{
             const corrected = checkAnswers(Exam,answers);
-            fetch('/postexam',{
+            fetch('/exam/submit',{
             method:"POST",
             headers:{
                 'Content-Type':'application/json'

@@ -213,7 +213,7 @@
     })
 
     function sendMessage(){
-        fetch('/sendmessage',{method:"POST",headers:{
+        fetch('/message/send',{method:"POST",headers:{
             "Content-type":"application/json"
         },body:JSON.stringify({message:message})}).then(res=> res.json()).then(data=>console.log('Response',data)).catch(err=>console.error('Error',err));
     }

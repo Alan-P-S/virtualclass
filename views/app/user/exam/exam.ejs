@@ -63,6 +63,7 @@
         <div class="box">
         <h2 id="<%= exam.id %>">📝<%= exam.subject %></h2>
         <button class="btn" id="<%= exam.id %>">Attempt</button>
+        <p><%=exam.createdAt%></p>
         </div>
         </div>
         <% }) %>
@@ -74,7 +75,7 @@
         document.querySelectorAll(".btn").forEach(function (button){
             button.addEventListener("click",function (){
                 const examId = this.id;
-                const url = `/attempt?examId=${encodeURIComponent(examId)}`;
+                const url = `/exam/attempt?examId=${encodeURIComponent(examId)}`;
                 window.location.href =url;
                 // fetch(url).then(response=>response.json().then(data =>console.log(data)));
             })
